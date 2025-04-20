@@ -1,8 +1,16 @@
-import React, { useState, useEffect } from 'react';
-import { ShoppingCart, Search, Menu, X, ShoppingBag, Sun, Moon } from 'lucide-react';
-import { useCart } from '../context/CartContext';
-import { useTheme } from '../context/ThemeContext';
-import CartDrawer from './CartDrawer';
+import React, { useState, useEffect } from "react";
+import {
+  ShoppingCart,
+  Search,
+  Menu,
+  X,
+  ShoppingBag,
+  Sun,
+  Moon,
+} from "lucide-react";
+import { useCart } from "../context/CartContext";
+import { useTheme } from "../context/ThemeContext";
+import CartDrawer from "./CartDrawer";
 
 interface NavbarProps {
   onSearch: (query: string) => void;
@@ -10,50 +18,52 @@ interface NavbarProps {
 
 const Navbar: React.FC<NavbarProps> = ({ onSearch }) => {
   const [isScrolled, setIsScrolled] = useState(false);
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState("");
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { getTotalItems } = useCart();
   const { theme, toggleTheme } = useTheme();
-  
+
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 10);
     };
-    
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
-  
+
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
     onSearch(e.target.value);
   };
-  
+
   const toggleCart = () => {
     setIsCartOpen(!isCartOpen);
   };
-  
+
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
   };
 
   return (
-    <header 
+    <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled 
-          ? 'bg-white dark:bg-gray-800 shadow-md py-2' 
-          : 'bg-white/80 dark:bg-gray-800/80 backdrop-blur-md py-4'
+        isScrolled
+          ? "bg-white dark:bg-gray-800 shadow-md py-2"
+          : "bg-white/80 dark:bg-gray-800/80 backdrop-blur-md py-4"
       }`}
     >
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center space-x-2 bg-green-300 bg-opacity-20 shadow-xl rounded-md px-3 py-2">
             <ShoppingBag className="h-8 w-8 text-green-400" />
-            <span className="text-xl font-bold text-gray-800 dark:text-white">FreshMart</span>
+            <span className="text-xl font-bold text-gray-800 dark:text-white">
+              FarmingoMart
+            </span>
           </div>
-          
+
           {/* Desktop Search */}
           <div className="hidden md:flex items-center max-w-md w-full bg-gray-100 dark:bg-gray-700 rounded-full px-4 py-2">
             <Search className="h-5 w-5 text-gray-400" />
@@ -65,22 +75,26 @@ const Navbar: React.FC<NavbarProps> = ({ onSearch }) => {
               onChange={handleSearchChange}
             />
           </div>
-          
+
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-6">
             <button
               onClick={toggleTheme}
               className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
-              aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+              aria-label={
+                theme === "dark"
+                  ? "Switch to light mode"
+                  : "Switch to dark mode"
+              }
             >
-              {theme === 'dark' ? (
+              {theme === "dark" ? (
                 <Sun className="h-5 w-5 text-gray-200" />
               ) : (
                 <Moon className="h-5 w-5 text-gray-700" />
               )}
             </button>
-            
-            <button 
+
+            <button
               className="relative p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
               onClick={toggleCart}
               aria-label="Shopping cart"
@@ -93,22 +107,26 @@ const Navbar: React.FC<NavbarProps> = ({ onSearch }) => {
               )}
             </button>
           </div>
-          
+
           {/* Mobile Menu Button */}
           <div className="flex md:hidden items-center space-x-4">
             <button
               onClick={toggleTheme}
               className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
-              aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+              aria-label={
+                theme === "dark"
+                  ? "Switch to light mode"
+                  : "Switch to dark mode"
+              }
             >
-              {theme === 'dark' ? (
+              {theme === "dark" ? (
                 <Sun className="h-5 w-5 text-gray-200" />
               ) : (
                 <Moon className="h-5 w-5 text-gray-700" />
               )}
             </button>
-            
-            <button 
+
+            <button
               className="relative p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
               onClick={toggleCart}
               aria-label="Shopping cart"
@@ -120,7 +138,7 @@ const Navbar: React.FC<NavbarProps> = ({ onSearch }) => {
                 </span>
               )}
             </button>
-            
+
             <button
               className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
               onClick={toggleMobileMenu}
@@ -134,7 +152,7 @@ const Navbar: React.FC<NavbarProps> = ({ onSearch }) => {
             </button>
           </div>
         </div>
-        
+
         {/* Mobile Search - Only visible when mobile menu is open */}
         {isMobileMenuOpen && (
           <div className="md:hidden pt-4 pb-2">
@@ -151,7 +169,7 @@ const Navbar: React.FC<NavbarProps> = ({ onSearch }) => {
           </div>
         )}
       </div>
-      
+
       {/* Cart Drawer */}
       <CartDrawer isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
     </header>
